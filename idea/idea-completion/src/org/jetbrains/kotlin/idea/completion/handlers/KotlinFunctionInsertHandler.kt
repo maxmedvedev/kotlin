@@ -159,14 +159,17 @@ sealed class KotlinFunctionInsertHandler(callType: CallType<*>) : KotlinCallable
 
             if (insertLambda && lambdaInfo!!.explicitParameters) {
                 val placeholderRange = TextRange(openingBracketOffset, closeBracketOffset!! + 1)
-                val explicitParameterTypes =
-                    LambdaSignatureTemplates.explicitParameterTypesRequired(context.file as KtFile, placeholderRange, lambdaInfo.lambdaType)
+                val explicitParameterTypes = LambdaSignatureTemplates.explicitParameterTypesRequired(
+                        context.file as KtFile,
+                        placeholderRange,
+                        lambdaInfo.lambdaType
+                )
                 LambdaSignatureTemplates.insertTemplate(
-                    context,
-                    placeholderRange,
-                    lambdaInfo.lambdaType,
-                    explicitParameterTypes,
-                    signatureOnly = false
+                        context,
+                        placeholderRange,
+                        lambdaInfo.lambdaType,
+                        explicitParameterTypes,
+                        signatureOnly = false
                 )
                 return
             }
@@ -192,8 +195,9 @@ sealed class KotlinFunctionInsertHandler(callType: CallType<*>) : KotlinCallable
             return inputValueArguments || lambdaInfo != null
         }
 
-        private fun isInsertSpacesInOneLineFunctionEnabled(project: Project) =
-            CodeStyleSettingsManager.getSettings(project).getCustomSettings(KotlinCodeStyleSettings::class.java)!!.INSERT_WHITESPACES_IN_SIMPLE_ONE_LINE_METHOD
+        private fun isInsertSpacesInOneLineFunctionEnabled(project: Project) = CodeStyleSettingsManager.getSettings(project).getCustomSettings(
+                KotlinCodeStyleSettings::class.java
+        )!!.INSERT_WHITESPACES_IN_SIMPLE_ONE_LINE_METHOD
     }
 
     object Infix : KotlinFunctionInsertHandler(CallType.INFIX) {
